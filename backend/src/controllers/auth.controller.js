@@ -83,12 +83,20 @@ export const logout = (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const { name, about, avatar } = req.body;
+        const { name, about, avatar, phone } = req.body;
         const userId = req.user._id;
+
+        // Check if phone is being updated and if it already exists
+        if (phone) {
+            const phoneExists = await User.findOne({ phone, _id: { $ne: userId } });
+            if (phoneExists) {
+                return res.status(400).json({ message: "Phone number already in use" });
+            }
+        }
 
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            { name, about, avatar },
+            { name, about, avatar, phone },
             { new: true }
         );
 

@@ -56,6 +56,29 @@ const ProfilePage = () => {
         };
     };
 
+    const [name, setName] = useState("");
+    const [about, setAbout] = useState("");
+    const [phone, setPhone] = useState("");
+    
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [isEditingAbout, setIsEditingAbout] = useState(false);
+    const [isEditingPhone, setIsEditingPhone] = useState(false);
+
+    useEffect(() => {
+        if (authUser) {
+            setName(authUser.name || "");
+            setAbout(authUser.about || "");
+            setPhone(authUser.phone || "");
+        }
+    }, [authUser]);
+
+    const handleUpdateProfile = async (field: string, value: string) => {
+        await updateProfile({ [field]: value });
+        if (field === "name") setIsEditingName(false);
+        if (field === "about") setIsEditingAbout(false);
+        if (field === "phone") setIsEditingPhone(false);
+    };
+
     return (
         <div className="h-screen pt-20">
             <div className="max-w-md mx-auto p-4 py-8">
@@ -101,38 +124,87 @@ const ProfilePage = () => {
 
                     {/* Info Sections */}
                     <div className="w-full space-y-6">
+                        {/* Name Section */}
                         <div className="space-y-1">
                             <Label className="text-sm text-base-content/60 flex items-center gap-2">
                                 <User className="w-4 h-4" />
                                 Name
                             </Label>
                             <div className="flex items-center justify-between py-2 border-b border-base-300">
-                                <span className="text-lg">{authUser?.name}</span>
-                                <Pencil className="size-4 text-green-500 cursor-pointer" />
+                                {isEditingName ? (
+                                    <input
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        onBlur={() => handleUpdateProfile("name", name)}
+                                        onKeyDown={(e) => e.key === "Enter" && handleUpdateProfile("name", name)}
+                                        className="bg-transparent outline-none flex-1 text-lg"
+                                        autoFocus
+                                    />
+                                ) : (
+                                    <span className="text-lg flex-1">{authUser?.name}</span>
+                                )}
+                                <Pencil 
+                                    className="size-4 text-green-500 cursor-pointer" 
+                                    onClick={() => setIsEditingName(true)}
+                                />
                             </div>
                             <p className="text-xs text-base-content/60">
                                 This is not your username or pin. This name will be visible to your contacts.
                             </p>
                         </div>
 
+                        {/* About Section */}
                         <div className="space-y-1">
                             <Label className="text-sm text-base-content/60 flex items-center gap-2">
                                 <Mail className="w-4 h-4" />
                                 About
                             </Label>
                             <div className="flex items-center justify-between py-2 border-b border-base-300">
-                                <span className="text-lg">At the movies 🎬</span>
-                                <Pencil className="size-4 text-green-500 cursor-pointer" />
+                                {isEditingAbout ? (
+                                    <input
+                                        type="text"
+                                        value={about}
+                                        onChange={(e) => setAbout(e.target.value)}
+                                        onBlur={() => handleUpdateProfile("about", about)}
+                                        onKeyDown={(e) => e.key === "Enter" && handleUpdateProfile("about", about)}
+                                        className="bg-transparent outline-none flex-1 text-lg"
+                                        autoFocus
+                                    />
+                                ) : (
+                                    <span className="text-lg flex-1">{authUser?.about}</span>
+                                )}
+                                <Pencil 
+                                    className="size-4 text-green-500 cursor-pointer" 
+                                    onClick={() => setIsEditingAbout(true)}
+                                />
                             </div>
                         </div>
 
+                        {/* Phone Section */}
                         <div className="space-y-1">
                             <Label className="text-sm text-base-content/60 flex items-center gap-2">
                                 <Phone className="w-4 h-4" />
                                 Phone
                             </Label>
                             <div className="flex items-center justify-between py-2 border-b border-base-300">
-                                <span className="text-lg">{authUser?.phone || "+1 (555) 123-4567"}</span>
+                                {isEditingPhone ? (
+                                    <input
+                                        type="text"
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                        onBlur={() => handleUpdateProfile("phone", phone)}
+                                        onKeyDown={(e) => e.key === "Enter" && handleUpdateProfile("phone", phone)}
+                                        className="bg-transparent outline-none flex-1 text-lg"
+                                        autoFocus
+                                    />
+                                ) : (
+                                    <span className="text-lg flex-1">{authUser?.phone}</span>
+                                )}
+                                <Pencil 
+                                    className="size-4 text-green-500 cursor-pointer" 
+                                    onClick={() => setIsEditingPhone(true)}
+                                />
                             </div>
                         </div>
                     </div>

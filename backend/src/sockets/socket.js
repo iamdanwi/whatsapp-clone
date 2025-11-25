@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import http from "http";
 import express from "express";
 import { addMessageToQueue } from "../queue/messageQueue.js";
+import User from "../models/user.model.js";
 
 const app = express();
 
@@ -30,10 +31,18 @@ io.on("connection", (socket) => {
     // io.emit() is used to send events to all the connected clients
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async () => {
         console.log("user disconnected", socket.id);
         delete userSocketMap[userId];
         io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+        if (userId) {
+            try {
+                await User.findByIdAndUpdate(userId, { lastSeen: new Date() });
+            } catch (error) {
+                console.error("Error updating lastSeen:", error);
+            }
+        }
     });
 
     socket.on("join chat", (room) => {

@@ -66,7 +66,6 @@ const Sidebar = ({ className = "" }: { className?: string }) => {
                     <button className="btn btn-ghost btn-circle btn-sm" title="Status">
                         <CircleDashed className="size-5" />
                     </button>
-                    <NewChatDialog />
                     <button onClick={logout} className="btn btn-ghost btn-circle btn-sm" title="Logout">
                         <MoreVertical className="size-5" />
                     </button>
@@ -86,7 +85,7 @@ const Sidebar = ({ className = "" }: { className?: string }) => {
             </div>
 
             {/* Chat List */}
-            <div className="overflow-y-auto w-full flex-1 bg-base-100">
+            <div className="overflow-y-auto w-full flex-1 bg-base-100 relative">
                 {filteredChats.map((chat) => {
                      const otherUser = chat.isGroup 
                         ? { name: chat.groupName, avatar: "https://ui-avatars.com/api/?name=" + chat.groupName } 
@@ -94,6 +93,7 @@ const Sidebar = ({ className = "" }: { className?: string }) => {
                      
                      const isOnline = !chat.isGroup && onlineUsers.includes(otherUser?._id);
                      const lastMessage = chat.lastMessage;
+                     const unreadCount = Math.floor(Math.random() * 5); // Mock unread count
 
                     return (
                         <button
@@ -129,14 +129,21 @@ const Sidebar = ({ className = "" }: { className?: string }) => {
                                         </span>
                                     )}
                                 </div>
-                                <div className="text-sm text-zinc-500 truncate">
-                                    {lastMessage ? (
-                                        <span className={selectedChat?._id === chat._id ? "text-base-content" : ""}>
-                                            {lastMessage.sender._id === authUser?._id ? "You: " : ""}
-                                            {lastMessage.content}
+                                <div className="flex justify-between items-center">
+                                    <div className="text-sm text-zinc-500 truncate max-w-[80%]">
+                                        {lastMessage ? (
+                                            <span className={selectedChat?._id === chat._id ? "text-base-content" : ""}>
+                                                {lastMessage.sender._id === authUser?._id ? "You: " : ""}
+                                                {lastMessage.content}
+                                            </span>
+                                        ) : (
+                                            <span className="italic">No messages yet</span>
+                                        )}
+                                    </div>
+                                    {unreadCount > 0 && (
+                                        <span className="bg-orange-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                                            {unreadCount}
                                         </span>
-                                    ) : (
-                                        <span className="italic">No messages yet</span>
                                     )}
                                 </div>
                             </div>
@@ -147,6 +154,11 @@ const Sidebar = ({ className = "" }: { className?: string }) => {
                 {filteredChats.length === 0 && (
                     <div className="text-center text-zinc-500 py-4">No chats found</div>
                 )}
+                
+                {/* FAB for New Chat */}
+                <div className="absolute bottom-4 right-4 lg:hidden">
+                    <NewChatDialog />
+                </div>
             </div>
         </aside>
     );

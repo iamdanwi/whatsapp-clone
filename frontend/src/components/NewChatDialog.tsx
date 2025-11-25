@@ -101,6 +101,31 @@ const NewChatDialog = () => {
                         <div className="text-center p-4 text-base-content/60">Loading contacts...</div>
                     ) : filteredUsers.length > 0 ? (
                         <div className="divide-y divide-border">
+                            {/* New Group / New Contact Options */}
+                            {!searchQuery && (
+                                <>
+                                    <button className="w-full flex items-center gap-3 p-4 hover:bg-muted/50 transition-colors text-left">
+                                        <div className="size-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                                            <Users className="size-6 text-emerald-500" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="font-medium text-base-content">New group</h3>
+                                        </div>
+                                    </button>
+                                    <button className="w-full flex items-center gap-3 p-4 hover:bg-muted/50 transition-colors text-left">
+                                        <div className="size-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                                            <UserPlus className="size-6 text-emerald-500" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="font-medium text-base-content">New contact</h3>
+                                        </div>
+                                    </button>
+                                </>
+                            )}
+                            
+                            <div className="px-4 py-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                                Contacts on WhatsApp
+                            </div>
                             {filteredUsers.map((user) => (
                                 <button
                                     key={user._id}

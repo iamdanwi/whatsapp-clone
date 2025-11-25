@@ -17,7 +17,10 @@ export default function RootLayout({
 }>){
     return (
         <html lang="en" data-theme="dark">
-            <body className={inter.className}>
+            <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
+      <body className={inter.className}>
                 <ClientLayout>
                     {children}
                     <CallDialog />

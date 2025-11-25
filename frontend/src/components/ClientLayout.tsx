@@ -18,6 +18,12 @@ export default function ClientLayout({
 
     useEffect(() => {
         checkAuth();
+        
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(registration => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker registration failed', err));
+        }
     }, [checkAuth]);
 
     if (isCheckingAuth && !authUser) {
