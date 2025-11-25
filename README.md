@@ -41,7 +41,7 @@ Before running the project, ensure you have the following installed:
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/iamdanwi/whatsapp-clone
 cd whatsapp-clone
 ```
 
@@ -80,9 +80,6 @@ npm run dev
 ```
 
 The application should now be accessible at `http://localhost:3000`.
-
-## 📸 Screenshots
-*(Add screenshots of the Chat Interface, Call Screen, and Profile Page here)*
 
 ## 🤝 Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
