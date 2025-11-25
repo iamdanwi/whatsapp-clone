@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "author": "iamdainwi",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "bcryptjs": "^3.0.3",
